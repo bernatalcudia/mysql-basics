@@ -1,30 +1,60 @@
 const PORT = 8000
-
-const { error } = require('console')
-const cors = require('cors')
-
 const express = require('express')
-
-const mysql2 = require('mysql2')
+const cors = require('cors')
+const mysql = require('mysql2')
 
 const app = express()
-
 app.use(cors())
 app.use(express.json())
 
 
-const db = mysql2.createConnection({
+const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'root'
+    password: 'root',
+    database: 'testnode'
 })
-
-const sql = 'CREATE DATABASE testNode'
-
-
 db.connect()
 
-db.query(sql, (error, result) => {
-    if (error) console.log(error);
-    console.log(result)
+let sqlQuery = ''
+
+
+
+
+
+app.get('/cities', (req, res) => {
+    sqlQuery = 'SELECT * from cities'
+    db.query(sqlQuery, (err, result) => {
+        if (err) throw err
+        res.send(result)
+
+    })
+})
+
+app.post('/cities', (req, res) => {
+    const cityName = req.body.city
+    const country = req.body.country
+    sqlQuery = `INSERT INTO cities (name,country) values  ('${cityName} ', '${country} ');`;
+    db.query(sqlQuery, (err, result) => {
+        if (err) throw err
+        res.send('City added')
+    })
+})
+
+app.delete('/cities/:id', (req, res) => {
+    const cityID = req.params.id
+    sqlQuery = `DELETE from cities WHERE id=${cityID}`
+    db.query(sqlQuery, (err, result) => {
+        if (err) throw err
+        if (result.affectedRows > 0) {
+            res.send('City deleted')
+        } else {
+            res.status(404).send('City not found')
+        }
+
+    })
+})
+
+app.listen(PORT, () => {
+    console.log(`Server boot in Port:${PORT}`)
 })
