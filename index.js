@@ -32,9 +32,9 @@ app.get('/cities', (req, res) => {
 })
 
 app.post('/cities', (req, res) => {
-    const cityName = req.body.city
-    const country = req.body.country
-    sqlQuery = `INSERT INTO cities (name,country) values  ('${cityName} ', '${country} ');`;
+    const cityName = req.body.name
+    const cityCountry = req.body.country
+    sqlQuery = `INSERT INTO cities (name,country) values  ('${cityName}', '${cityCountry}');`;
     db.query(sqlQuery, (err, result) => {
         if (err) throw err
         res.send('City added')
@@ -43,6 +43,7 @@ app.post('/cities', (req, res) => {
 
 app.delete('/cities/:id', (req, res) => {
     const cityID = req.params.id
+
     sqlQuery = `DELETE from cities WHERE id=${cityID}`
     db.query(sqlQuery, (err, result) => {
         if (err) throw err
@@ -52,6 +53,21 @@ app.delete('/cities/:id', (req, res) => {
             res.status(404).send('City not found')
         }
 
+    })
+})
+
+app.put('/cities/:id', (req, res) => {
+    const cityID = req.params.id
+    const cityName = req.body.name
+    const cityCountry = req.body.country
+    sqlQuery = `UPDATE cities SET name='${cityName}',country='${cityCountry}' WHERE id=${cityID}`
+    db.query(sqlQuery, (err, result) => {
+        if (err) throw err
+        if (result.affectedRows > 0) {
+            res.send('City updated')
+        } else {
+            res.status(404).send('City not found')
+        }
     })
 })
 
