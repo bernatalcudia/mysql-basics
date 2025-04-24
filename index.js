@@ -42,9 +42,9 @@ app.post('/cities', (req, res) => {
 })
 
 app.delete('/cities/:id', (req, res) => {
-    const cityID = req.params.id
+    const cityId = req.params.id
 
-    sqlQuery = `DELETE from cities WHERE id=${cityID}`
+    sqlQuery = `DELETE from cities WHERE id=${cityId}`
     db.query(sqlQuery, (err, result) => {
         if (err) throw err
         if (result.affectedRows > 0) {
@@ -57,10 +57,10 @@ app.delete('/cities/:id', (req, res) => {
 })
 
 app.put('/cities/:id', (req, res) => {
-    const cityID = req.params.id
+    const cityId = req.params.id
     const cityName = req.body.name
     const cityCountry = req.body.country
-    sqlQuery = `UPDATE cities SET name='${cityName}',country='${cityCountry}' WHERE id=${cityID}`
+    sqlQuery = `UPDATE cities SET name='${cityName}',country='${cityCountry}' WHERE id=${cityId}`
     db.query(sqlQuery, (err, result) => {
         if (err) throw err
         if (result.affectedRows > 0) {
