@@ -35,8 +35,8 @@ app.post('/cities', (req, res) => {
     const cityName = req.body.name
     const cityCountry = req.body.country
     sqlQuery = `INSERT INTO cities (name,country) values  ('${cityName}', '${cityCountry}');`;
-    db.query(sqlQuery, (err, result) => {
-        if (err) throw err
+    db.query(sqlQuery, (error, result) => {
+        if (error) throw error
         res.send('City added')
     })
 })
@@ -45,8 +45,8 @@ app.delete('/cities/:id', (req, res) => {
     const cityId = req.params.id
 
     sqlQuery = `DELETE from cities WHERE id=${cityId}`
-    db.query(sqlQuery, (err, result) => {
-        if (err) throw err
+    db.query(sqlQuery, (error, result) => {
+        if (error) throw error
         if (result.affectedRows > 0) {
             res.send('City deleted')
         } else {
@@ -61,8 +61,8 @@ app.put('/cities/:id', (req, res) => {
     const cityName = req.body.name
     const cityCountry = req.body.country
     sqlQuery = `UPDATE cities SET name='${cityName}',country='${cityCountry}' WHERE id=${cityId}`
-    db.query(sqlQuery, (err, result) => {
-        if (err) throw err
+    db.query(sqlQuery, (error, result) => {
+        if (error) throw error
         if (result.affectedRows > 0) {
             res.send('City updated')
         } else {
